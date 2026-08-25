@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOKO GYM | אומנויות לחימה בהרצליה</title>
+<meta name="description" content="SOKO GYM הרצליה — ג'יו ג'יטסו, אגרוף תאילנדי, היאבקות, אומנויות לחימה, כושר והגנה עצמית. קבעו שיעור ניסיון חינם.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Suez+One&family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-0:#0F0E0D;
+    --bg-1:#151311;
+    --bg-2:#1D1A16;
+    --ink:#F2ECE0;
+    --ink-dim:#B5AC9E;
+    --ink-faint:#7A7268;
+    --red:#C4311F;
+    --red-bright:#E2452E;
+    --amber:#D9A441;
+    --line:#332F29;
+    --canvas:#EDE6D6;
+    --canvas-ink:#171410;
+    --radius:2px;
+    --wrap:1180px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg-0);
+    color:var(--ink);
+    font-family:'Heebo',sans-serif;
+    direction:rtl;
+    position:relative;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  /* grain texture */
+  body::before{
+    content:"";
+    position:fixed;inset:0;
+    pointer-events:none;
+    z-index:2000;
+    opacity:.05;
+    mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  h1,h2,h3,.display{
+    font-family:'Suez One',serif;
+    font-weight:400;
+    line-height:1.15;
+    letter-spacing:0;
+  }
+  a{color:inherit;text-decoration:none;}
+  img{max-width:100%;display:block;}
+  .wrap{max-width:var(--wrap);margin:0 auto;padding:0 28px;}
+  .eyebrow{
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:.14em;
+    color:var(--red-bright);
+    display:flex;align-items:center;gap:10px;
+    margin-bottom:14px;
+  }
+  .eyebrow::before{content:"";width:26px;height:2px;background:var(--red-bright);display:inline-block;}
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:10px;
+    padding:16px 30px;
+    font-family:'Heebo',sans-serif;
+    font-weight:700;
+    font-size:16px;
+    border-radius:var(--radius);
+    cursor:pointer;
+    border:2px solid transparent;
+    transition:transform .18s ease, box-shadow .18s ease, background .18s ease;
+    white-space:nowrap;
+  }
+  .btn-primary{
+    background:var(--red);
+    color:var(--canvas);
+    box-shadow:0 0 0 0 rgba(196,49,31,.55);
+  }
+  .btn-primary:hover{
+    background:var(--red-bright);
+    transform:translateY(-2px);
+    box-shadow:0 8px 24px -6px rgba(196,49,31,.65), 0 0 0 3px rgba(226,69,46,.18);
+  }
+  .btn-primary:active{transform:translateY(0) scale(.98);}
+  .btn-outline{
+    background:transparent;
+    border-color:var(--ink-faint);
+    color:var(--ink);
+  }
+  .btn-outline:hover{border-color:var(--ink);transform:translateY(-2px);}
+
+  /* ===== HEADER ===== */
+  header{
+    position:sticky;top:0;z-index:900;
+    background:rgba(15,14,13,.88);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{
+    display:flex;align-items:center;justify-content:space-between;
+    height:78px;
+  }
+  .logo{
+    font-family:'Suez One',serif;
+    font-size:22px;
+    letter-spacing:.03em;
+    display:flex;align-items:baseline;gap:8px;
+  }
+  .logo span{color:var(--red-bright);}
+  nav.links{display:flex;gap:34px;align-items:center;}
+  nav.links a{
+    font-size:15px;font-weight:500;color:var(--ink-dim);
+    position:relative;padding:6px 0;
+    transition:color .15s ease;
+  }
+  nav.links a:hover{color:var(--ink);}
+  nav.links a::after{
+    content:"";position:absolute;bottom:0;right:0;left:auto;
+    width:0;height:2px;background:var(--red-bright);
+    transition:width .2s ease;
+  }
+  nav.links a:hover::after{width:100%;}
+  .header-cta{display:flex;align-items:center;gap:14px;}
+  .header-phone{
+    font-weight:700;font-size:15px;color:var(--ink);
+    display:flex;align-items:center;gap:8px;
+  }
+  .header-phone svg{flex-shrink:0;}
+  .burger{display:none;background:none;border:none;color:var(--ink);cursor:pointer;padding:8px;}
+
+  /* ===== HERO ===== */
+  .hero{
+    position:relative;
+    min-height:92vh;
+    display:flex;flex-direction:column;justify-content:center;
+    padding:60px 0 40px;
+    overflow:hidden;
+    background:
+      radial-gradient(ellipse 90% 60% at 75% 15%, rgba(196,49,31,.16), transparent 60%),
+      radial-gradient(ellipse 60% 50% at 15% 90%, rgba(217,164,65,.08), transparent 60%),
+      var(--bg-0);
+  }
+  .hero-ghost{
+    position:absolute;
+    top:50%;left:50%;
+    transform:translate(-50%,-52%);
+    font-family:'Suez One',serif;
+    font-size:min(34vw,420px);
+    color:transparent;
+    -webkit-text-stroke:1px rgba(242,236,224,.05);
+    white-space:nowrap;
+    pointer-events:none;
+    user-select:none;
+    z-index:0;
+  }
+  .hero-inner{position:relative;z-index:2;}
+  .hero-rating{
+    display:inline-flex;align-items:center;gap:10px;
+    background:var(--bg-2);
+    border:1px solid var(--line);
+    padding:9px 18px;
+    border-radius:100px;
+    font-size:14px;font-weight:600;
+    margin-bottom:28px;
+    animation:fadeUp .7s ease both;
+  }
+  .stars{color:var(--amber);letter-spacing:2px;font-size:13px;}
+  .hero h1{
+    font-size:clamp(44px,7vw,86px);
+    max-width:920px;
+    margin-bottom:26px;
+    animation:fadeUp .8s ease .05s both;
+  }
+  .hero h1 em{
+    font-style:normal;
+    color:var(--red-bright);
+  }
+  .hero p.sub{
+    font-size:clamp(17px,2vw,21px);
+    color:var(--ink-dim);
+    max-width:560px;
+    line-height:1.65;
+    margin-bottom:40px;
+    animation:fadeUp .8s ease .12s both;
+  }
+  .hero-actions{
+    display:flex;gap:16px;flex-wrap:wrap;
+    animation:fadeUp .8s ease .2s both;
+  }
+  @keyframes fadeUp{
+    from{opacity:0;transform:translateY(22px);}
+    to{opacity:1;transform:translateY(0);}
+  }
+
+  /* ===== TAPE MARQUEE ===== */
+  .tape{
+    position:relative;
+    background:var(--red);
+    transform:rotate(-1.4deg);
+    margin:-30px 0 -10px;
+    z-index:5;
+    overflow:hidden;
+    box-shadow:0 10px 30px -10px rgba(0,0,0,.5);
+  }
+  .tape-track{
+    display:flex;
+    white-space:nowrap;
+    animation:scroll-left 26s linear infinite;
+  }
+  .tape span{
+    font-family:'Suez One',serif;
+    font-size:22px;
+    color:var(--canvas);
+    padding:14px 26px;
+    display:inline-flex;align-items:center;gap:26px;
+  }
+  .tape span::after{content:"★";color:rgba(23,20,16,.55);font-size:14px;}
+  @keyframes scroll-left{
+    from{transform:translateX(0);}
+    to{transform:translateX(-50%);}
+  }
+
+  /* ===== SECTION SHARED ===== */
+  section{padding:120px 0;position:relative;}
+  .section-head{max-width:640px;margin-bottom:64px;}
+  .section-head h2{font-size:clamp(32px,4.5vw,52px);}
+  .alt{background:var(--bg-1);}
+
+  /* ===== SERVICES ===== */
+  .services-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+  }
+  .service-card{
+    background:var(--bg-0);
+    padding:44px 36px;
+    transition:background .25s ease;
+    position:relative;
+  }
+  .alt .service-card{background:var(--bg-1);}
+  .service-card:hover{background:var(--bg-2);}
+  .service-icon{
+    width:52px;height:52px;
+    display:flex;align-items:center;justify-content:center;
+    border:1.5px solid var(--line);
+    border-radius:50%;
+    margin-bottom:24px;
+    color:var(--red-bright);
+    transition:border-color .2s ease, transform .2s ease;
+  }
+  .service-card:hover .service-icon{border-color:var(--red-bright);transform:scale(1.06);}
+  .service-card h3{font-size:23px;margin-bottom:12px;}
+  .service-card p{color:var(--ink-dim);font-size:15px;line-height:1.7;}
+
+  /* ===== ABOUT / TALE OF TAPE ===== */
+  .about{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
+  .about-copy p{color:var(--ink-dim);font-size:17px;line-height:1.85;margin-bottom:18px;}
+  .tale{
+    background:var(--bg-2);
+    border:1px solid var(--line);
+    padding:8px 0;
+  }
+  .tale-row{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:20px 32px;
+    border-bottom:1px solid var(--line);
+  }
+  .tale-row:last-child{border-bottom:none;}
+  .tale-label{color:var(--ink-faint);font-size:13px;letter-spacing:.08em;font-weight:600;}
+  .tale-value{font-family:'Suez One',serif;font-size:26px;color:var(--amber);}
+  .tale-value small{font-family:'Heebo',sans-serif;font-size:13px;color:var(--ink-dim);font-weight:500;margin-inline-start:6px;}
+
+  /* ===== CTA BAND ===== */
+  .cta-band{
+    background:linear-gradient(135deg, var(--red) 0%, #8f2417 100%);
+    padding:90px 0;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+  }
+  .cta-band::before{
+    content:"";position:absolute;inset:0;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity:.08;mix-blend-mode:overlay;
+  }
+  .cta-band h2{
+    font-size:clamp(34px,5vw,58px);
+    color:var(--canvas);
+    max-width:680px;margin:0 auto 20px;
+    position:relative;z-index:2;
+  }
+  .cta-band p{color:rgba(237,230,214,.85);font-size:18px;margin-bottom:38px;position:relative;z-index:2;}
+  .cta-band .hero-actions{justify-content:center;position:relative;z-index:2;}
+  .cta-band .btn-outline{border-color:rgba(237,230,214,.5);color:var(--canvas);}
+  .cta-band .btn-outline:hover{border-color:var(--canvas);background:rgba(237,230,214,.08);}
+  .cta-band .btn-primary{background:var(--canvas);color:var(--red);}
+  .cta-band .btn-primary:hover{background:#fff;box-shadow:0 8px 24px -6px rgba(0,0,0,.4);}
+
+  /* ===== LOCATION ===== */
+  .location{display:grid;grid-template-columns:1fr 1.1fr;gap:0;border:1px solid var(--line);}
+  .loc-info{padding:64px 56px;background:var(--bg-1);}
+  .loc-info h2{font-size:clamp(30px,4vw,44px);margin-bottom:24px;}
+  .loc-list{margin-top:34px;display:flex;flex-direction:column;gap:22px;}
+  .loc-item{display:flex;gap:16px;align-items:flex-start;}
+  .loc-item svg{flex-shrink:0;color:var(--red-bright);margin-top:2px;}
+  .loc-item div h4{font-size:15px;margin-bottom:4px;font-weight:700;}
+  .loc-item div p{color:var(--ink-dim);font-size:15px;}
+  .loc-item div a:hover{color:var(--red-bright);}
+  .map-wrap{min-height:420px;filter:grayscale(.4) contrast(1.1);}
+  .map-wrap iframe{width:100%;height:100%;border:0;display:block;min-height:420px;}
+
+  /* ===== FOOTER ===== */
+  footer{background:var(--bg-0);border-top:1px solid var(--line);padding:70px 0 30px;}
+  .footer-top{display:flex;justify-content:space-between;flex-wrap:wrap;gap:50px;margin-bottom:60px;}
+  .footer-brand .logo{margin-bottom:16px;}
+  .footer-brand p{color:var(--ink-faint);font-size:14px;max-width:280px;line-height:1.7;}
+  .footer-cols{display:flex;gap:70px;flex-wrap:wrap;}
+  .footer-col h5{font-size:13px;letter-spacing:.1em;color:var(--ink-faint);margin-bottom:18px;font-weight:700;}
+  .footer-col a,.footer-col p{display:block;color:var(--ink-dim);font-size:15px;margin-bottom:12px;}
+  .footer-col a:hover{color:var(--red-bright);}
+  .footer-bottom{
+    border-top:1px solid var(--line);
+    padding-top:26px;
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;
+    color:var(--ink-faint);font-size:13px;
+  }
+
+  /* ===== MOBILE STICKY BAR ===== */
+  .mobile-bar{
+    position:fixed;bottom:0;right:0;left:0;
+    z-index:950;
+    display:none;
+    background:var(--bg-1);
+    border-top:1px solid var(--line);
+    padding:12px 16px;
+    gap:10px;
+  }
+  .mobile-bar a{flex:1;text-align:center;}
+
+  /* reveal on scroll */
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease, transform .7s ease;}
+  .reveal.in{opacity:1;transform:translateY(0);}
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width:980px){
+    .services-grid{grid-template-columns:repeat(2,1fr);}
+    .about{grid-template-columns:1fr;gap:48px;}
+    .location{grid-template-columns:1fr;}
+    .footer-top{flex-direction:column;}
+  }
+  @media (max-width:720px){
+    nav.links,.header-phone{display:none;}
+    .burger{display:block;}
+    .services-grid{grid-template-columns:1fr;}
+    section{padding:80px 0;}
+    .loc-info{padding:44px 28px;}
+    .mobile-bar{display:flex;}
+    body{padding-bottom:70px;}
+    .hero{min-height:auto;padding:50px 0 30px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= HEADER ================= -->
+<header>
+  <div class="wrap nav">
+    <div class="logo">SOKO <span>GYM</span></div>
+    <nav class="links">
+      <a href="#home">ראשי</a>
+      <a href="#services">החוגים</a>
+      <a href="#about">אודות</a>
+      <a href="#location">מיקום</a>
+    </nav>
+    <div class="header-cta">
+      <a class="header-phone" href="tel:+972546376577">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        054-637-6577
+      </a>
+      <a class="btn btn-primary" href="https://wa.me/972546376577" target="_blank" rel="noopener">שיעור ניסיון חינם</a>
+      <button class="burger" aria-label="תפריט">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ================= HERO ================= -->
+<section id="home" class="hero">
+  <div class="hero-ghost">SOKO</div>
+  <div class="wrap hero-inner">
+    <div class="hero-rating">
+      <span class="stars">★★★★★</span>
+      <span>4.7 · 50 ביקורות בגוגל</span>
+    </div>
+    <h1>כאן <em>בונים</em><br>לוחמים.</h1>
+    <p class="sub">ג'יו ג'יטסו, אגרוף תאילנדי, היאבקות ואומנויות לחימה — מתחת לקורת גג אחת ברחוב סוקולוב, הרצליה. לכל גיל, לכל רמה, בלי תירוצים.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="https://wa.me/972546376577" target="_blank" rel="noopener">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.35 5.06L2 22l5.06-1.33C8.5 21.5 10.2 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm5.2 14.3c-.22.6-1.28 1.16-1.77 1.2-.45.05-1 .07-1.63-.1-.37-.1-.85-.27-1.46-.53-2.57-1.1-4.25-3.7-4.38-3.87-.13-.17-1.05-1.4-1.05-2.67 0-1.27.67-1.9.9-2.16.24-.26.52-.32.7-.32h.5c.16 0 .38-.03.58.44.22.53.75 1.83.82 1.96.06.13.1.29.02.46-.08.17-.13.27-.25.42-.13.15-.27.33-.38.44-.13.13-.26.27-.11.53.15.26.68 1.12 1.46 1.82 1 .9 1.85 1.18 2.11 1.31.26.13.4.11.55-.07.15-.17.63-.73.8-.98.17-.26.33-.2.55-.12.22.08 1.42.67 1.66.79.24.13.4.19.46.29.06.11.06.62-.16 1.21z"/></svg>
+        קבעו שיעור ניסיון חינם
+      </a>
+      <a class="btn btn-outline" href="tel:+972546376577">052-637-6577 · התקשרו</a>
+    </div>
+  </div>
+</section>
+
+<div class="tape">
+  <div class="tape-track">
+    <div style="display:flex;">
+      <span>SOKO GYM</span><span>הרצליה</span><span>ג'יו ג'יטסו</span><span>אגרוף תאילנדי</span><span>היאבקות</span><span>הגנה עצמית</span>
+      <span>SOKO GYM</span><span>הרצליה</span><span>ג'יו ג'יטסו</span><span>אגרוף תאילנדי</span><span>היאבקות</span><span>הגנה עצמית</span>
+    </div>
+    <div style="display:flex;" aria-hidden="true">
+      <span>SOKO GYM</span><span>הרצליה</span><span>ג'יו ג'יטסו</span><span>אגרוף תאילנדי</span><span>היאבקות</span><span>הגנה עצמית</span>
+      <span>SOKO GYM</span><span>הרצליה</span><span>ג'יו ג'יטסו</span><span>אגרוף תאילנדי</span><span>היאבקות</span><span>הגנה עצמית</span>
+    </div>
+  </div>
+</div>
+
+<!-- ================= SERVICES ================= -->
+<section id="services">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">החוגים שלנו</div>
+      <h2>שישה ענפים. מטרה אחת: שתשתפרו.</h2>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="services-grid">
+
+      <div class="service-card reveal">
+        <div class="service-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 12V7a2 2 0 1 1 4 0"/><path d="M11 11.5V6a2 2 0 1 1 4 0v5.5"/><path d="M15 12V7a2 2 0 1 1 4 0v6a7 7 0 0 1-7 7h-1a7 7 0 0 1-6.3-4L3 12.5c-.4-.8 0-1.8.9-2.1.7-.2 1.4.1 1.8.7L7 13"/></svg>
+        </div>
+        <h3>אומנויות לחימה</h3>
+        <p>יסודות הקרב: משמעת, טכניקה וביטחון עצמי, בקצב שמתאים לכל מתאמן.</p>
+      </div>
+
+      <div class="service-card reveal">
+        <div class="service-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 7a5 5 0 0 1 0 10"/><path d="M7 7a5 5 0 0 0 0 10"/><path d="M9 12h6"/></svg>
+        </div>
+        <h3>ג'יו ג'יטסו</h3>
+        <p>קרב קרקע, מינוף וטכניקה על פני כוח גס — הבסיס לכל לוחם.</p>
+      </div>
+
+      <div class="service-card reveal">
+        <div class="service-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="3"/><circle cx="16" cy="16" r="3"/><path d="M10.5 10.5 13.5 13.5"/></svg>
+        </div>
+        <h3>היאבקות</h3>
+        <p>שליטה, טייקדאון ועבודת רגליים ברמה שנבנתה על מזרן תחרותי.</p>
+      </div>
+
+      <div class="service-card reveal">
+        <div class="service-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 20 12 8l6 12"/><path d="M9 14h6"/></svg>
+        </div>
+        <h3>אגרוף תאילנדי</h3>
+        <p>שמונת האיברים — אגרופים, מרפקים, ברכיים ובעיטות בעצימות אמיתית.</p>
+      </div>
+
+      <div class="service-card reveal">
+        <div class="service-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="9" width="4" height="6" rx="1"/><rect x="18" y="9" width="4" height="6" rx="1"/><line x1="6" y1="12" x2="18" y2="12"/></svg>
+        </div>
+        <h3>כושר</h3>
+        <p>אימוני כוח וסיבולת בהשראת ספורט הקרב — לגוף חזק ומוכן לכל אתגר.</p>
+      </div>
+
+      <div class="service-card reveal">
+        <div class="service-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 5 3.5 8.5 8 9 4.5-.5 8-4 8-9V6l-8-3Z"/><path d="m9.5 12 2 2 3.5-3.5"/></svg>
+        </div>
+        <h3>הגנה עצמית</h3>
+        <p>כלים מעשיים להגנה על עצמכם והיקרים לכם, בכל מצב.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ================= ABOUT ================= -->
+<section id="about" class="alt">
+  <div class="wrap about">
+    <div class="about-copy reveal">
+      <div class="eyebrow">מי אנחנו</div>
+      <h2 style="font-size:clamp(30px,4vw,44px);margin-bottom:24px;">מכון אימונים לכל מי שרוצה להשתפר</h2>
+      <p>SOKO GYM נמצא ברחוב סוקולוב 81 בהרצליה, ומאגד תחת קורת גג אחת שישה ענפי ספורט קרב — מג'יו ג'יטסו ואגרוף תאילנדי ועד היאבקות והגנה עצמית.</p>
+      <p>המתאמנים שלנו נעים בין מתחילים גמורים לספורטאים תחרותיים, ומדריכי המכון בונים לכל אחד מסלול אימונים אישי — בלי קיצורי דרך, עם המון עבודה אמיתית.</p>
+      <a class="btn btn-outline" href="#location" style="margin-top:10px;">בואו לבקר במכון</a>
+    </div>
+    <div class="tale reveal">
+      <div class="tale-row">
+        <span class="tale-label">דירוג גוגל</span>
+        <span class="tale-value">4.7<small>מתוך 5</small></span>
+      </div>
+      <div class="tale-row">
+        <span class="tale-label">ביקורות</span>
+        <span class="tale-value">50<small>וסופרים</small></span>
+      </div>
+      <div class="tale-row">
+        <span class="tale-label">ענפי ספורט</span>
+        <span class="tale-value">6<small>תחת גג אחד</small></span>
+      </div>
+      <div class="tale-row">
+        <span class="tale-label">רמת מתאמנים</span>
+        <span class="tale-value">הכל<small>ממתחילים ועד תחרותי</small></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CTA BAND ================= -->
+<section class="cta-band">
+  <div class="wrap">
+    <h2 class="reveal">הצעד הראשון הוא תמיד הכי קשה.<br>אחריו — אנחנו איתכם.</h2>
+    <p class="reveal">שיעור ניסיון ראשון עלינו. תבואו לראות את המכון, להכיר את המדריכים ולהתחיל לזוז.</p>
+    <div class="hero-actions reveal">
+      <a class="btn btn-primary" href="https://wa.me/972546376577" target="_blank" rel="noopener">שריינו שיעור ניסיון בוואטסאפ</a>
+      <a class="btn btn-outline" href="tel:+972546376577">054-637-6577</a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= LOCATION ================= -->
+<section id="location">
+  <div class="wrap">
+    <div class="location reveal">
+      <div class="loc-info">
+        <div class="eyebrow">מיקום</div>
+        <h2>בואו להתאמן איתנו</h2>
+        <p style="color:var(--ink-dim);font-size:16px;line-height:1.7;">המכון ממוקם בלב הרצליה, עם גישה נוחה וחניה באזור.</p>
+        <div class="loc-list">
+          <div class="loc-item">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+            <div>
+              <h4>כתובת</h4>
+              <p>רחוב סוקולוב 81, הרצליה, 4600922</p>
+            </div>
+          </div>
+          <div class="loc-item">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            <div>
+              <h4>טלפון</h4>
+              <a href="tel:+972546376577">054-637-6577</a>
+            </div>
+          </div>
+          <div class="loc-item">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.35 5.06L2 22l5.06-1.33C8.5 21.5 10.2 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
+            <div>
+              <h4>וואטסאפ</h4>
+              <a href="https://wa.me/972546376577" target="_blank" rel="noopener">שריינו שיעור ניסיון</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="map-wrap">
+        <iframe
+          src="https://maps.google.com/maps?q=Sokolov%20St%2081%2C%20Herzliya%2C%204600922&t=&z=15&ie=UTF8&iwloc=&output=embed"
+          allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+          title="מפת SOKO GYM"></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="logo">SOKO <span>GYM</span></div>
+        <p>מכון אומנויות לחימה בהרצליה — ג'יו ג'יטסו, אגרוף תאילנדי, היאבקות, כושר והגנה עצמית תחת גג אחד.</p>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h5>ניווט</h5>
+          <a href="#home">ראשי</a>
+          <a href="#services">החוגים</a>
+          <a href="#about">אודות</a>
+          <a href="#location">מיקום</a>
+        </div>
+        <div class="footer-col">
+          <h5>יצירת קשר</h5>
+          <a href="tel:+972546376577">054-637-6577</a>
+          <a href="https://wa.me/972546376577" target="_blank" rel="noopener">וואטסאפ</a>
+          <p>רחוב סוקולוב 81, הרצליה</p>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 SOKO GYM. כל הזכויות שמורות.</span>
+      <span>4.7 ★ מתוך 5 · 50 ביקורות בגוגל</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ================= MOBILE STICKY BAR ================= -->
+<div class="mobile-bar">
+  <a class="btn btn-outline" href="tel:+972546376577">התקשרו</a>
+  <a class="btn btn-primary" href="https://wa.me/972546376577" target="_blank" rel="noopener">שיעור ניסיון חינם</a>
+</div>
+
+<script>
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  },{threshold:.15});
+  revealEls.forEach(el=>io.observe(el));
+
+  document.querySelector('.burger')?.addEventListener('click', ()=>{
+    const links = document.querySelector('nav.links');
+    const isOpen = links.style.display === 'flex';
+    links.style.cssText = isOpen ? '' : 'display:flex;position:absolute;top:78px;right:0;left:0;flex-direction:column;background:#151311;padding:24px 28px;border-bottom:1px solid #332F29;gap:20px;';
+  });
+</script>
+
+</body>
+</html>
